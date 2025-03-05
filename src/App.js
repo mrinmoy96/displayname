@@ -1,64 +1,47 @@
-import logo from './logo.svg';
-import './App.css';
-// import DisplayName from './DisplayName';
-
-// function App() {
-//   return (
-//     <div className="App">
-//       <DisplayName/>
-//     </div>
-//   );
-// }
-
-// export default App;
-
-
-
-
-import logo from "./logo.svg";
-import "./App.css";
 import { useEffect, useState } from "react";
+import "./App.css";
 
 function App() {
   const [first, setFirst] = useState("");
   const [last, setLast] = useState("");
-  const [fullName, setFullName] = useState("");
-
-  const handleFirst = (e) => {
-    setFirst(e.target.value);
-  };
-
-  const handleLast = (e) => {
-    setLast(e.target.value);
-  };
+  const [submitted, setSubmitted] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!first || !last) {
-      setFullName("");
-      return;
+    // Check if both fields are filled before setting submitted to true
+    if (first && last) {
+      setSubmitted(true);
+    } else {
+      setSubmitted(false); // Explicitly handle invalid submission
     }
-    let res = first + " " + last;
-    setFullName(res);
   };
+
   return (
-    <>
-      <div className="App">
-        <h1>Full Name Display</h1>
-        <form onSubmit={handleSubmit}>
-          <div>
-            <p>First Name:</p>
-            <input type="text" value={first} onChange={(e) => handleFirst(e)} />
-          </div>
-          <div>
-            <p>Last Name:</p>
-            <input type="text" value={last} onChange={(e) => handleLast(e)} />
-          </div>
-          <button type="submit">Submit</button>
-        </form>
-        {fullName && <div>Full Name: {fullName}</div>}
-      </div>
-    </>
+    <div className="App">
+      <h1>Full Name Display</h1>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>First Name:</label>
+          <input
+            type="text"
+            value={first}
+            onChange={(e) => setFirst(e.target.value.trim())}
+            required
+          />
+        </div>
+        <div>
+          <label>Last Name:</label>
+          <input
+            type="text"
+            value={last}
+            onChange={(e) => setLast(e.target.value.trim())}
+            required
+          />
+        </div>
+        <button type="submit">Submit</button>
+      </form>
+      {submitted && <div>Full Name: {`${first} ${last}`}</div>}
+    </div>
   );
 }
 
